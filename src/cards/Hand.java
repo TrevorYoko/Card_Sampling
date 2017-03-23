@@ -19,11 +19,11 @@ public class Hand
 	}
 	
 	public void makeThree(){
-		Card card = new Card(0);
-		Card card2 = new Card(13);
-		Card card3= new Card(26);
-		Card card4 = new Card(3);
-		Card card5= new Card(16);
+		Card card = new Card(8);
+		Card card2 = new Card(14);
+		Card card3= new Card(1);
+		Card card4 = new Card(13);
+		Card card5= new Card(0);
 		//Card draw = Deck.deck[rand.next_int(52)];
 		//Card draw2 = Deck.deck[rand.next_int(52)];
 		hand.add(card);
@@ -31,7 +31,7 @@ public class Hand
 		hand.add(card3);
 		hand.add(card4);
 		hand.add(card5);
-		
+
 	}
 
 	public void getRandomHand(boolean seven)
@@ -113,7 +113,6 @@ public class Hand
 				index --; // dont allow the index to increment
 			}
 		}
-
 	}
 	public String toString()
 	{
@@ -135,33 +134,25 @@ public class Hand
 	public Rank getRank(){
 		boolean isFlush = true;
 		boolean isStraight = false;
-		boolean fullHouse = false;
-		int pair = getPairs();
 		boolean threeOfAKind = isThreeOfAKind();
 		boolean fourOfAKind = isFourOfAKind();
 		rank = Rank.HighCard;
 		sortHand();
-		//Two Pair
-		if(pair == 1){
+		//Pair
+		if(isPair()){
 			rank = Rank.Pair;
 		}
-		//Three Pair
-		if(pair == 2){
+		//Two Pair
+		if(isTwoPair()){
 			rank = Rank.TwoPair;
 		}
-		
-
 		//Three of a Kind
-		else if(threeOfAKind)
+		if(threeOfAKind)
 		{
 			rank = Rank.ThreeOfKind;
-			System.out.println("////////////////" + rank.toString());
 		}
 		//FullHouse
-		if(threeOfAKind && pair == 1){
-			fullHouse = true;
-		}
-		if(fullHouse){
+		if(isFullHouse()){
 			rank = Rank.FullHouse;
 		}
 		//Four of A Kind
@@ -174,36 +165,80 @@ public class Hand
 				isFlush = false;
 			}
 		}
+		int straightCounter = 0;
 		for(int straight = 0; straight < hand.size() - 1; straight++){
-			if((hand.get(straight).getValue().ordinal() + 1) == (hand.get(straight).getValue().ordinal())){
-				isStraight = true;
+			if((hand.get(straight).getValue().ordinal()) + 1 == (hand.get(straight + 1).getValue().ordinal())){
+				straightCounter++;
 			}
 		}
+		if(straightCounter == 4)
+			isStraight = true;
 		if(isStraight && isFlush)
 			rank = Rank.StraightFlush;
-		else if(isFlush && !isStraight){
+		if(isFlush && !isStraight){
 			rank = Rank.Flush;
 		}
-		else if(isStraight && !isFlush)
+		if(isStraight && !isFlush)
 			rank = Rank.Straight;
+		if(isRoyalFlush() && isFlush && isStraight){
+			rank = Rank.RoyalFlush;
+		}
 
-		
 		return rank;
 	}
 
-	private int getPairs() {
-		int numPairs = 0; 
+	private boolean isPair() {
+		int[] cardValues = new int[13];
 		for (int i = 0; i < hand.size(); i++) {
-			Card first = hand.get(i);
-			for (int j = i + 1; j < hand.size(); j++) {
-				Card second = hand.get(j);
-				if (first.getValue() == second.getValue()) {
-					numPairs++;
+			cardValues[hand.get(i).getValue().ordinal()]++;
+		}
+		for (int i = 0; i < cardValues.length; i++) {
+			if (cardValues[i] == 2) {
+				if (!isTwoPair() || !isFullHouse()) {
+					return true;
 				}
 			}
 		}
-		return numPairs;
+		return false;
 	}
+	// Returns true if PokerHand is two pair (not full house)
+	// false otherwise.
+	private boolean isTwoPair() {
+		int[] cardValues = new int[13];
+		int numberOfPairs = 0;
+		for (int i = 0; i < hand.size(); i++) {
+			cardValues[hand.get(i).getValue().ordinal()]++;
+		}
+		for (int i = 0; i < cardValues.length; i++) {
+			if (cardValues[i] == 2) {
+				numberOfPairs++;
+			}
+		}
+		if (numberOfPairs == 2) {
+			return true;
+		}
+		return false;
+	}
+
+	// Returns true if PokerHand is a Full House
+	// false otherwise
+	private boolean isFullHouse(){
+		boolean hasAPair = false;
+		int[] cardValues = new int[13];
+		for(int i = 0; i < hand.size(); i++){
+			cardValues[hand.get(i).getValue().ordinal()]++;
+		}
+		for(int i = 0; i < cardValues.length; i++){
+			if(cardValues[i] == 2){
+				hasAPair = true;
+		    }
+		}
+		if(hasAPair && isThreeOfAKind()){			
+			return true;
+		}
+		return false;
+	}
+
 	private boolean isThreeOfAKind() {
 		int counter = 0;
 	    for(int x = 2; x < hand.size(); x++){
@@ -229,12 +264,18 @@ public class Hand
 	        	 return true;
 	         counter = 0;
 	    }
-
 	    return false;
 	}
+	private boolean isRoyalFlush(){
+		int numberCounter = 0;
+		for(int index = 0; index < hand.size(); index++){
+			numberCounter += hand.get(index).getValue().ordinal();
+		}
+		if(numberCounter == 50 || numberCounter == 63)
+			return true;
+		return false;
+	}
 
-	
-	
 	
 	public enum Rank
 	{

@@ -9,8 +9,7 @@ package cards;
  * @author Jacob
  *
  */
-public class Card implements Comparable
-{
+public class Card{
 	private CardValue value;
 	private Suite suite; //4 = spades  3 = hearts
 	//2 = diamonds   1 = clubs
@@ -124,24 +123,6 @@ public class Card implements Comparable
 	public enum CardValue{
 		Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Jack, Queen, King, Ace
 	}
-	@Override
-	public int compareTo(Object obj) 
-	{
-		Card card2 = (Card) obj;
-
-		if(this.suite == card2.suite && this.value == card2.value)
-		{
-			return 0;
-		}
-
-		if(this.value.ordinal() > card2.value.ordinal()) 
-		{
-			return 1;
-		}
-		else
-		{
-			return -1;
-		}
-	}
+	
 
 }
