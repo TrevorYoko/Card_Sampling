@@ -6,7 +6,7 @@ package cards;
  * This class represents a playing card and holds a face value
  * and a suite
  * 
- * @author Jacob
+ * @author Jacob and Trevor
  *
  */
 public class Card{

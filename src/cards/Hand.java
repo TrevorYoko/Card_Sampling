@@ -19,40 +19,8 @@ public class Hand
 		rand = new Javas_Random_Generator();
 		
 	}
-	public void add(Card card)
-	{
+	public void add(Card card){
 		hand.add(card);
-	}
-	
-	public void makeThree(){
-		Card card = new Card(8);
-		Card card2 = new Card(14);
-		Card card3= new Card(1);
-		Card card4 = new Card(13);
-		Card card5= new Card(0);
-		//Card draw = Deck.deck[rand.next_int(52)];
-		//Card draw2 = Deck.deck[rand.next_int(52)];
-		hand.add(card);
-		hand.add(card2);
-		hand.add(card3);
-		hand.add(card4);
-		hand.add(card5);
-
-	}
-	public boolean Winner(Hand hand2){
-		if(this.getRank().ordinal() == hand2.getRank().ordinal()){
-			for(int cardPosition = 0; cardPosition < hand.size(); cardPosition++){
-				if(hand.get(cardPosition).getSuite().ordinal() > hand2.hand.get(cardPosition).getSuite().ordinal()){
-					return true;
-				}
-				if(hand.get(cardPosition).getSuite().ordinal() < hand2.hand.get(cardPosition).getSuite().ordinal()){
-					return false;
-				}
-			}
-		}
-		if(this.getRank().ordinal() - hand2.getRank().ordinal() > 0)
-			return true;
-		return false;
 	}
 
 	public void getRandomHand(boolean seven)
@@ -86,12 +54,11 @@ public class Hand
 	public void getTwoRandomHands(Hand hand1, Hand hand2)
 	{
 		//Fill the first two slots of hand1 and hand2 with null
-		/*hand1.hand.add(null);
+		hand1.hand.add(null);
 		hand1.hand.add(null);   //This allows us to add the shared cards
 		hand2.hand.add(null);   //to the back of the hand
 		hand2.hand.add(null);
-	*/
-
+	
 		Card draw = Deck.deck[rand.next_int(52)];
 		hand1.hand.add(draw);
 		hand2.hand.add(draw);
@@ -157,6 +124,7 @@ public class Hand
 		boolean fourOfAKind = isFourOfAKind();
 		boolean isStraight = isStraight();
 		boolean isFlush = isFlush();
+		boolean isFullHouse = isFullHouse();
 		rank = Rank.HighCard;
 		sortHand();
 		//Pair
@@ -173,25 +141,26 @@ public class Hand
 			rank = Rank.ThreeOfKind;
 		}
 		//Straight
-		if(isStraight && !isFlush)
+		if(isStraight)
 			rank = Rank.Straight;
 		//Flush
-		if(isFlush && !isStraight){
+		if(isFlush){
 			rank = Rank.Flush;
 		}
 		//FullHouse
-		if(isFullHouse()){
+		if(isFullHouse){
 			rank = Rank.FullHouse;
 		}
 		//Four of A Kind
 		if(fourOfAKind){
 			rank = Rank.FourOfKind;
 		}
+
 		//StraightFlush
 		if(isStraight && isFlush)
 			rank = Rank.StraightFlush;
 
-
+		//RoyalFlush
 		if(isRoyalFlush() && isFlush && isStraight){
 			rank = Rank.RoyalFlush;
 		}
@@ -235,7 +204,7 @@ public class Hand
 				count++;
 			} 
 		}
-		if (count == 5 || count == 7) {
+		if (count == 4 || count == 6) {
 			return true;
 		} else {
 			return false;
