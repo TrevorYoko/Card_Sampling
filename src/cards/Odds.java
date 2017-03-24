@@ -1,19 +1,9 @@
 package cards;
 
-import java.lang.reflect.Array;
-import java.util.HashMap;
-
 import cards.Hand.Rank;
 
 public class Odds {
-
-	//private static Deck deck = new Deck();
-	private static int[] histogram = new int[10];
 	
-	public static void buildHistogram()
-	{	
-		//histogram = new int[10];
-	}
 	static double odds_to_win(int h1c1, int h1c2, int h2c1, int h2c2, int samples)
 	{
 		return -1.0;
@@ -21,7 +11,8 @@ public class Odds {
 	
 	static double[] percentage_per_hand_category_exhaustive(int hand_size)
 	{
-		Hand hand = new Hand();
+		int[] histogram = new int[10];
+		
 		if(hand_size == 5)
 		{	
 			for(int card1 = 0; card1 < 48; card1 ++)
@@ -34,6 +25,7 @@ public class Odds {
 						{
 							for(int card5 = card4+1; card5 < 52; card5 ++)
 							{
+								Hand hand = new Hand();
 								hand.add(Deck.deck[card1]);
 								hand.add(Deck.deck[card2]);
 								hand.add(Deck.deck[card3]);
@@ -61,10 +53,11 @@ public class Odds {
 						{
 							for(int card5 = card4+1; card5 < 50; card5 ++)
 							{
-								for(int card6 = card5+1; card5 < 51; card6 ++)
+								for(int card6 = card5+1; card6 < 51; card6 ++)
 								{
-									for(int card7 = card6+1; card5 < 52; card7 ++)
+									for(int card7 = card6+1; card7 < 52; card7 ++)
 									{
+										Hand hand = new Hand();
 										hand.add(Deck.deck[card1]);
 										hand.add(Deck.deck[card2]);
 										hand.add(Deck.deck[card3]);
@@ -86,7 +79,8 @@ public class Odds {
 		}
 		
 		double[] percents = new double[10];
-		int total = 0;
+
+		double total = 0;
 
 		for(int index = 0; index < percents.length; index ++)
 		{
@@ -102,20 +96,24 @@ public class Odds {
 	}
 	
 	static double[] percentage_per_hand_category_stochastic(int hand_size, int random_samples)
-	{  
+	{
 		final int N = random_samples;
-		Hand hand = new Hand();
+		int[] histogram = new int[10];
+		
 		
 		for(int index = 1; index < N; index ++)
 		{
-			hand.getRandomHand(false);
+			Hand hand = new Hand();
+			if(hand_size == 5)
+				hand.getRandomHand(false);
+			else
+				hand.getRandomHand(true);
 			Rank rank = hand.getRank();
-			
 			histogram[rank.ordinal()] ++;
 		}
 		
 		double[] percents = new double[10];
-		int total = 0;
+		double total = 0;
 
 		for(int index = 0; index < percents.length; index ++)
 		{
@@ -128,6 +126,4 @@ public class Odds {
 		}
 		return percents;
 	}
-	
 }
-

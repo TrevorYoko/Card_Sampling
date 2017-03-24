@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import cards.Card.Suite;
+
 public class Hand 
 {
 	private ArrayList<Card> hand;
@@ -151,10 +153,10 @@ public class Hand
 	}
 
 	public Rank getRank(){
-		boolean isFlush = true;
-		boolean isStraight = false;
 		boolean threeOfAKind = isThreeOfAKind();
 		boolean fourOfAKind = isFourOfAKind();
+		boolean isStraight = isStraight();
+		boolean isFlush = isFlush();
 		rank = Rank.HighCard;
 		sortHand();
 		//Pair
@@ -170,6 +172,13 @@ public class Hand
 		{
 			rank = Rank.ThreeOfKind;
 		}
+		//Straight
+		if(isStraight && !isFlush)
+			rank = Rank.Straight;
+		//Flush
+		if(isFlush && !isStraight){
+			rank = Rank.Flush;
+		}
 		//FullHouse
 		if(isFullHouse()){
 			rank = Rank.FullHouse;
@@ -178,33 +187,59 @@ public class Hand
 		if(fourOfAKind){
 			rank = Rank.FourOfKind;
 		}
-		//Flush
-		for(int flushPosition = 0; flushPosition < hand.size() - 1; flushPosition++){
-			if(!hand.get(flushPosition).getSuite().equals(hand.get(flushPosition + 1).getSuite())){
-				isFlush = false;
-				break;
-			}
-		}
-		int straightCounter = 0;
-		for(int straight = 0; straight < hand.size() - 1; straight++){
-			if((hand.get(straight).getValue().ordinal()) + 1 == (hand.get(straight + 1).getValue().ordinal())){
-				straightCounter++;
-			}
-		}
-		if(straightCounter >= 4)//So long as there is a straight longer than 5 cards, it counts
-			isStraight = true;
+		//StraightFlush
 		if(isStraight && isFlush)
 			rank = Rank.StraightFlush;
-		if(isFlush && !isStraight){
-			rank = Rank.Flush;
-		}
-		if(isStraight && !isFlush)
-			rank = Rank.Straight;
+
+
 		if(isRoyalFlush() && isFlush && isStraight){
 			rank = Rank.RoyalFlush;
 		}
 
 		return rank;
+	}
+
+	private boolean isFlush() {
+		int countHeart = 0;
+		int countSpade = 0;
+		int countClub = 0;
+		int countDiamond = 0;
+
+		for (int index = 0; index < hand.size(); index++) {
+			if (hand.get(index).getSuite() == Suite.Hearts) {
+				countHeart++;
+			}
+			if (hand.get(index).getSuite() == Suite.Spades) {
+				countSpade++;
+			}
+			if (hand.get(index).getSuite() == Suite.Clubs) {
+				countClub++;
+			}
+			if (hand.get(index).getSuite() == Suite.Diamonds) {
+				countDiamond++;
+			}
+		}
+
+		if ((countHeart == 5 || countSpade == 5 || countClub == 5 || countDiamond == 5) || (countHeart == 7 || countSpade == 7 || countClub == 7 || countDiamond == 7)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private boolean isStraight() {
+		int count = 0;
+
+		for (int index = 0; index < hand.size() - 1; index++) {
+			if (hand.get(index).getValue().ordinal() + 1 == (hand.get(index + 1).getValue().ordinal())) {
+				count++;
+			} 
+		}
+		if (count == 5 || count == 7) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private boolean isPair() {
@@ -221,6 +256,7 @@ public class Hand
 		}
 		return false;
 	}
+	
 	// Returns true if PokerHand is two pair (not full house)
 	// false otherwise.
 	private boolean isTwoPair() {
@@ -289,7 +325,7 @@ public class Hand
 	private boolean isRoyalFlush(){
 		int numberCounter = 0;
 		for(int index = 0; index < hand.size(); index++){
-			numberCounter += hand.get(index).getValue().ordinal();
+			numberCounter += (hand.get(index).getValue().ordinal());
 		}
 		if(numberCounter == 50 || numberCounter == 63)
 			return true;

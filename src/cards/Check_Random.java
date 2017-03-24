@@ -133,7 +133,7 @@ public class Check_Random
 
     fill_array(generator); // determine how many calls to next_int are required to hit every number 
 
-    // time how lon git takes to generate 10,000,000 numbers
+    // time how long it takes to generate 10,000,000 numbers
     long start_time = System.nanoTime();
     for (int i = 0; i < 10000000; i++)
       {
