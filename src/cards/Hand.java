@@ -6,23 +6,41 @@ import java.util.Comparator;
 
 import cards.Card.Suite;
 
+/**
+ * This class will represent a hand of 5 or 7 cards, reorpresented by an arraylist
+ *
+ * @author jacob and Trevor
+ *
+ */
 public class Hand 
 {
 	private ArrayList<Card> hand;
 	private Rank rank;
 	private Random_Generator rand;
 
-
+	/**
+	 * This is the constructor for the hand 
+	 * 
+	 */
 	public Hand()
 	{
 		hand = new ArrayList<>();
 		rand = new Javas_Random_Generator();
 		
 	}
+	/**
+	 * This method will add a card to the hand from the deck
+	 *
+	 */
 	public void add(Card card){
 		hand.add(card);
 	}
-
+	
+	/**
+	 * creates a hand that contains a random amount of cards
+	 * 
+	 * @param seven 	boolean value representing whether the hand contains 5 or 7 cards
+	 */
 	public void getRandomHand(boolean seven)
 	{
 		//Set the number of cards to be drawn to be five or seven based
@@ -50,7 +68,12 @@ public class Hand
 			}
 		}
 	}
-
+	/**
+	 * creates two random hands containing 5 cards, shared between the two hands and 2 random cards for each hand
+	 * 
+	 * @param hand1		the first hand of cards
+	 * @param hand2 	the second hand of cards
+	 */
 	public void getTwoRandomHands(Hand hand1, Hand hand2)
 	{
 		//Fill the first two slots of hand1 and hand2 with null
@@ -102,6 +125,11 @@ public class Hand
 			}
 		}
 	}
+	/**
+	 * gives a string representation of the cards in a hand 
+	 * 
+	 * @return a string representation of the hand
+	 */
 	public String toString()
 	{
 		String str = "";
@@ -111,6 +139,11 @@ public class Hand
 		}
 		return str.substring(0, str.length()-2);
 	}
+	
+	/**
+	 * sorts the hand by the rank of the enums of the values of the cards
+	 *
+	 */
 	public void sortHand(){
 		Collections.sort(hand, new Comparator<Card>(){
 		    @Override
@@ -118,7 +151,11 @@ public class Hand
 		    	return card1.getValue().ordinal() - (card2.getValue().ordinal());
 		    }});
 	}
-
+	/**
+	 * finds the rank of a hand determined by the cards that the hand contains
+	 * 
+	 * @return an enum representing the rank of the hands
+	 */
 	public Rank getRank(){
 		boolean threeOfAKind = isThreeOfAKind();
 		boolean fourOfAKind = isFourOfAKind();
@@ -167,7 +204,11 @@ public class Hand
 
 		return rank;
 	}
-
+	/**
+	 * private helper method determines if the hand is a flush
+	 * 
+	 * @return  True for a flush and false for not
+	 */
 	private boolean isFlush() {
 		int countHeart = 0;
 		int countSpade = 0;
@@ -188,17 +229,21 @@ public class Hand
 				countDiamond++;
 			}
 		}
-
+		//checks if all the cards in the hand are of a single suit
 		if ((countHeart == 5 || countSpade == 5 || countClub == 5 || countDiamond == 5) || (countHeart == 7 || countSpade == 7 || countClub == 7 || countDiamond == 7)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-
+	/**
+	 * private helper method determines if the hand is a straight
+	 * 
+	 * @return  True for a straight and false for not
+	 */
 	private boolean isStraight() {
 		int count = 0;
-
+		//Determines if the ordinals of each card in the sorted hand equals the next
 		for (int index = 0; index < hand.size() - 1; index++) {
 			if (hand.get(index).getValue().ordinal() + 1 == (hand.get(index + 1).getValue().ordinal())) {
 				count++;
@@ -210,7 +255,11 @@ public class Hand
 			return false;
 		}
 	}
-
+	/**
+	 * private helper method determines if the hand is a single pair or not
+	 * 
+	 * @return  True for a single pair and false for not
+	 */
 	private boolean isPair() {
 		int[] cardValues = new int[13];
 		for (int i = 0; i < hand.size(); i++) {
@@ -218,7 +267,7 @@ public class Hand
 		}
 		for (int i = 0; i < cardValues.length; i++) {
 			if (cardValues[i] == 2) {
-				if (!isTwoPair() || !isFullHouse()) {
+				if (!isTwoPair() || !isFullHouse()) { //checks to see if the rank of the hand is only a pair
 					return true;
 				}
 			}
@@ -226,8 +275,11 @@ public class Hand
 		return false;
 	}
 	
-	// Returns true if PokerHand is two pair (not full house)
-	// false otherwise.
+	/**
+	 * private helper method determines if the hand is a two pair
+	 * 
+	 * @return  True for a two pair and false for not
+	 */
 	private boolean isTwoPair() {
 		int[] cardValues = new int[13];
 		int numberOfPairs = 0;
@@ -239,14 +291,17 @@ public class Hand
 				numberOfPairs++;
 			}
 		}
-		if (numberOfPairs == 2) {
+		if (numberOfPairs == 2) {//checks to see if the rank of the hand is only two pair
 			return true;
 		}
 		return false;
 	}
 
-	// Returns true if PokerHand is a Full House
-	// false otherwise
+	/**
+	 * private helper method determines if the hand is a full house
+	 * 
+	 * @return  True for a full house and false for not
+	 */
 	private boolean isFullHouse(){
 		boolean hasAPair = false;
 		int[] cardValues = new int[13];
@@ -258,12 +313,16 @@ public class Hand
 				hasAPair = true;
 		    }
 		}
-		if(hasAPair && isThreeOfAKind()){			
+		if(hasAPair && isThreeOfAKind()){ //checks to see if the rank of the hand also contains a pair and a three of a kind 		
 			return true;
 		}
 		return false;
 	}
-
+	/**
+	 * private helper method determines if the hand is a three of a kind
+	 * 
+	 * @return  True for a three of a kind and false for not
+	 */
 	private boolean isThreeOfAKind() {
 		int counter = 0;
 	    for(int x = 2; x < hand.size(); x++){
@@ -278,6 +337,11 @@ public class Hand
 
 	    return false;
 	}
+	/**
+	 * private helper method determines if the hand is a four of a kind
+	 * 
+	 * @return  True for a three of a kind and false for not
+	 */ 
 	private boolean isFourOfAKind() {
 		int counter = 0;
 	    for(int x = 2; x < hand.size(); x++){
@@ -285,23 +349,28 @@ public class Hand
 	             if(hand.get(x).getValue().equals(hand.get(y).getValue()))
 	                 counter++;
 	         }
-	         if(counter == 3) 
+	         if(counter == 3)
 	        	 return true;
 	         counter = 0;
 	    }
 	    return false;
 	}
+	/**
+	 * private helper method determines if the hand is royal flush or not
+	 * 
+	 * @return  True for a royal flush and false for not
+	 */
 	private boolean isRoyalFlush(){
 		int numberCounter = 0;
 		for(int index = 0; index < hand.size(); index++){
-			numberCounter += (hand.get(index).getValue().ordinal());
+			numberCounter += (hand.get(index).getValue().ordinal()); //counts the ordinals in the rank of the hand
 		}
 		if(numberCounter == 50 || numberCounter == 63)
 			return true;
 		return false;
 	}
 
-	
+	//The enums determing the ranks of the hand
 	public enum Rank
 	{
 		HighCard, Pair, TwoPair, ThreeOfKind, Straight, Flush, 

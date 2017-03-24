@@ -2,13 +2,36 @@ package cards;
 
 import cards.Hand.Rank;
 
+/**
+ * This class contains methods to calulate odds and percentages  for different poker hands
+ * 
+ * @author jacob and trevor
+ *
+ */
 public class Odds {
 	
+	/**
+	 * UNIMPLEMENTED
+	 * 
+	 * @param h1c1
+	 * @param h1c2
+	 * @param h2c1
+	 * @param h2c2
+	 * @param samples
+	 * @return
+	 */
 	static double odds_to_win(int h1c1, int h1c2, int h2c1, int h2c2, int samples)
 	{
 		return -1.0;
 	}
 	
+	/**
+	 * This method will calculate all the possible hands and retrun all the percentafes of each
+	 * hand rank via an array of doubles
+	 * 
+	 * @param hand_size -- 5 or 7
+	 * @return array of percentages
+	 */
 	static double[] percentage_per_hand_category_exhaustive(int hand_size)
 	{
 		int[] histogram = new int[10];
@@ -95,6 +118,15 @@ public class Odds {
 		return percents;
 	}
 	
+	/**
+	 * This method will sample random hand N number of times to create a histogram
+	 * of hand ranks
+	 * Then it will calculate the percentage of each hand 
+	 * 
+	 * @param hand_size -- 5 or 7
+	 * @param random_samples -- number of samples
+	 * @return array of percentages
+	 */
 	static double[] percentage_per_hand_category_stochastic(int hand_size, int random_samples)
 	{
 		final int N = random_samples;

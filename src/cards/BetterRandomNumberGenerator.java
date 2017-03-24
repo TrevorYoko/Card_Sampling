@@ -11,7 +11,7 @@ public class BetterRandomNumberGenerator implements Random_Generator {
 	@Override
 	public int next_int(int max) 
 	{
-		
+		//uses the system nano time to find a random number
 		return (int)Math.abs(System.nanoTime() % max);
 	}
 

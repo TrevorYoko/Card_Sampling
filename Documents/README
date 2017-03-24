@@ -1,0 +1,27 @@
+Assignment 8 - Card_Sampling
+Authors: Trevor Yokoyama and Jacob Hamsher
+March 24, 2017
+
+Description:
+The purpose of this project was to find the different probabilities of a poker hand. This was accomplished through the use of an exhaustive and stochastic method. Enums 
+were also used for the values and suits of each of the individual cards.
+
+TA NOTICE:
+We decided to forgo the Texas Hold em part of the assignment because of time reasons. Also the random number generator that was made in the lab did not work for us 
+causing us to develop our own generator that is based on the current system time. 
+
+Problems:
+We had some problems regarding the enums as we did not know the correct syntax for some of them. We also ran into trouble when finding the exhaustive and stochastic percents,
+but this was due to a syntax error and a conditional fixed it for us.
+
+I pledge that the work done here was my own and that I have learned how to write
+	      this program (such that I could throw it out and restart and finish it in a timely
+	      manner).  I am not turning in any work that I cannot understand, describe, or
+	      recreate.  Any sources (e.g., web sites) other than the lecture that I used to
+	      help write the code are cited in my work.  When working with a partner, I have
+	      contributed an equal share and understand all the submitted work.  Further, I have
+	      helped write all the code assigned as pair-programming and reviewed all code that
+	      was written separately.
+	                      Trevor Yokoyama & Jacob Hamsher
+
+
