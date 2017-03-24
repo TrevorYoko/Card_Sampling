@@ -17,6 +17,10 @@ public class Hand
 		rand = new Javas_Random_Generator();
 		
 	}
+	public void add(Card card)
+	{
+		hand.add(card);
+	}
 	
 	public void makeThree(){
 		Card card = new Card(8);
@@ -178,6 +182,7 @@ public class Hand
 		for(int flushPosition = 0; flushPosition < hand.size() - 1; flushPosition++){
 			if(!hand.get(flushPosition).getSuite().equals(hand.get(flushPosition + 1).getSuite())){
 				isFlush = false;
+				break;
 			}
 		}
 		int straightCounter = 0;
@@ -186,7 +191,11 @@ public class Hand
 				straightCounter++;
 			}
 		}
+<<<<<<< Updated upstream
 		if(straightCounter >= 4)//So long as there is a straight longer than 5 cards, it counts
+=======
+		if(straightCounter >= 4)
+>>>>>>> Stashed changes
 			isStraight = true;
 		if(isStraight && isFlush)
 			rank = Rank.StraightFlush;
