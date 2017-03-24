@@ -11,14 +11,14 @@ public class Test {
 		Hand hand2 = new Hand();
 		hand.makeThree();
 		//hand.getRandomHand(false);
-		hand2.getRandomHand(false);
+		hand2.getRandomHand(true);
 		hand.sortHand();
 		hand2.sortHand();
 		System.out.println(hand.toString());
 		System.out.println(hand2.toString());
 		System.out.println(hand.getRank());
 		System.out.println(hand2.getRank());
-		System.out.println(hand.getRank().ordinal() > hand2.getRank().ordinal());
+		System.out.println(hand.Winner(hand2));
 		
 		System.out.println();
 	

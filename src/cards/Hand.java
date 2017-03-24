@@ -33,6 +33,21 @@ public class Hand
 		hand.add(card5);
 
 	}
+	public boolean Winner(Hand hand2){
+		if(this.getRank().ordinal() == hand2.getRank().ordinal()){
+			for(int cardPosition = 0; cardPosition < hand.size(); cardPosition++){
+				if(hand.get(cardPosition).getSuite().ordinal() > hand2.hand.get(cardPosition).getSuite().ordinal()){
+					return true;
+				}
+				if(hand.get(cardPosition).getSuite().ordinal() < hand2.hand.get(cardPosition).getSuite().ordinal()){
+					return false;
+				}
+			}
+		}
+		if(this.getRank().ordinal() - hand2.getRank().ordinal() > 0)
+			return true;
+		return false;
+	}
 
 	public void getRandomHand(boolean seven)
 	{
@@ -171,7 +186,7 @@ public class Hand
 				straightCounter++;
 			}
 		}
-		if(straightCounter == 4)
+		if(straightCounter >= 4)//So long as there is a straight longer than 5 cards, it counts
 			isStraight = true;
 		if(isStraight && isFlush)
 			rank = Rank.StraightFlush;
